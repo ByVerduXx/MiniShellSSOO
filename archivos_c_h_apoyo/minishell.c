@@ -23,7 +23,21 @@ int main(int argc, char *argv[])
    while (1)
    {
    
-	   
+	   imprimir_prompt();
+      leer_linea_ordenes(buf);
+      if(buf=="exit")
+      {
+
+         exit(0);
+      }
+      else{
+
+         if(es_ord_interna(buf))
+         {
+            ejecutar_ord_interna(buf);
+         }
+
+      }
 	   
 	   
 	   
