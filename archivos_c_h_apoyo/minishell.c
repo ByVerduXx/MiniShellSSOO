@@ -19,15 +19,13 @@ int main(int argc, char *argv[])
 
    char buf[BUFSIZ];
 
-
    while (1)
    {
    
 	   imprimir_prompt();
-      leer_linea_ordenes(buf);
-      if(buf=="exit")
-      {
-
+      leer_linea_ordenes((char *) buf);
+      printf("%s\n",buf);
+      if(buf=="exit"){
          exit(0);
       }
       else{
@@ -36,19 +34,11 @@ int main(int argc, char *argv[])
          {
             ejecutar_ord_interna(buf);
          }
+         else{
+            printf("Todavia no esta hecho\n");
+         }
 
-      }
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-	   
+      } 
    }
 
    return 0;
