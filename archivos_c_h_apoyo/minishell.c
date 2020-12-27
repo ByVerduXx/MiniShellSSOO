@@ -24,13 +24,12 @@ int main(int argc, char *argv[])
    
 	   imprimir_prompt();
       leer_linea_ordenes((char *) buf);
-      printf("%s\n",buf);
-      if(buf=="exit"){
+      if (strcmp(buf,"exit") == 0){
          exit(0);
       }
       else{
 
-         if(es_ord_interna(buf))
+         if (es_ord_interna(buf))
          {
             ejecutar_ord_interna(buf);
          }
