@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
             ejecutar_ord_interna(buf);
          }
          else{
-            printf("Todavia no esta hecho\n");
+            ejecutar_linea_ordenes(buf);
          }
 
       } 
