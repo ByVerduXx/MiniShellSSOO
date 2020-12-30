@@ -13,12 +13,22 @@
 #include "entrada_minishell.h"
 #include "ejecutar.h"
 
-
+static void manejar_sigchild(int signo){
+   int estado;
+   waitpid(-1,&estado,WNOHANG);
+}
 int main(int argc, char *argv[])
 {
 
    char buf[BUFSIZ];
+   struct sigaction sa;
 
+   memset(&sa,0,sizeof(sa));
+   sa.sa_handler = manejar_sigchild;
+   sa.sa_flags = SA_NOCLDSTOP | SA_RESTART;
+
+   sigaction(SIGCHLD,&sa,NULL);
+   
    while (1)
    {
    
@@ -40,7 +50,7 @@ int main(int argc, char *argv[])
       } 
    }
 
-   return 0;
+   exit(EXIT_SUCCESS);
 }
 
 
