@@ -19,6 +19,7 @@ pid_t ejecutar_orden(const char *orden, int *pbackgr)
    pid = fork(); //Creamos la minishell hija
    if (pid == 0){ //Si es la minishell hija
       execvp(args[0],args);//Ejecuta la orden
+      return 0;
 
    }
    else{ 
