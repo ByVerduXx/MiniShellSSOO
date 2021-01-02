@@ -44,7 +44,18 @@ int main(int argc, char *argv[])
             ejecutar_ord_interna(buf);
          }
          else{
+            if(strstr(buf, ";")!=NULL){
+               char *token = strtok(buf, ";");
+               while (token!= NULL){
+                  ejecutar_linea_ordenes(token);
+                  token=strtok(NULL,";");
+                  printf("\n ");
+               }
+               
+            }
+            else{
             ejecutar_linea_ordenes(buf);
+            }
          }
 
       } 
