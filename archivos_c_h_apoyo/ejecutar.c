@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <stdio.h>
 
 #include "parser.h"
 #include "ejecutar.h"
@@ -19,7 +20,8 @@ pid_t ejecutar_orden(const char *orden, int *pbackgr)
    pid = fork(); //Creamos la minishell hija
    if (pid == 0){ //Si es la minishell hija
       execvp(args[0],args);//Ejecuta la orden
-      return 0;
+      printf("Esa orden no existe.\n");
+      exit(-1);
 
    }
    else{ 
