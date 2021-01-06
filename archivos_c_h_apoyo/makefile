@@ -4,8 +4,8 @@ CFLAGS = -g -Wall
 libshell.a: parser.o internas.o
 	ar -rcs libshell.a parser.o internas.o 
 
-minishell: minishell.o libshell.a entrada_minishell.o ejecutar.o libmemoria.o
-	$(CC) $(CFLAGS) minishell.o entrada_minishell.o ejecutar.o libmemoria.o -L./ -lshell -o minishell
+minishell: minishell.o redirecciones.o libshell.a entrada_minishell.o ejecutar.o libmemoria.o
+	$(CC) $(CFLAGS) minishell.o redirecciones.o entrada_minishell.o ejecutar.o libmemoria.o -L./ -lshell -o minishell
 	
 minishell.o: minishell.c parser.h ejecutar.h libmemoria.h
 	$(CC) $(CFLAGS) -c minishell.c
@@ -13,11 +13,14 @@ minishell.o: minishell.c parser.h ejecutar.h libmemoria.h
 entrada_minishell.o: entrada_minishell.c entrada_minishell.h
 	$(CC) $(CFLAGS) -c entrada_minishell.c
 	
-ejecutar.o: ejecutar.c ejecutar.h libshell.a libmemoria.h
+ejecutar.o: ejecutar.c ejecutar.h libshell.a libmemoria.h redirecciones.h
 	$(CC) $(CFLAGS) -c ejecutar.c -L./ -lshell
 	
 libmemoria.o: libmemoria.c libmemoria.h	
 	$(CC) $(CFLAGS) -c libmemoria.c
+
+redirecciones.o: redirecciones.c redirecciones.h
+	$(CC) $(CFLAGS) -c redirecciones.c
 	
 .PHONY: clean
 clean:
@@ -27,3 +30,4 @@ clean:
 	rm -f redirecciones.o 
 	rm -f entrada_minishell.o
 	rm -f minishell
+	rm -f redirecciones.o
