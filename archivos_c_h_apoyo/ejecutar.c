@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <stdio.h>
 
 #include "parser.h"
 #include "ejecutar.h"
@@ -20,7 +21,7 @@ pid_t ejecutar_orden(const char *orden, int *pbackgr)
    }
    if(indice_ent!=-1)
    {
-       redirec_entrada(args,indice_ent,&entrada);
+      redirec_entrada(args,indice_ent,&entrada);
       
    }
    if(indice_sal!=-1){
@@ -28,36 +29,41 @@ pid_t ejecutar_orden(const char *orden, int *pbackgr)
       redirec_salida(args,indice_sal,&salida);
 
    }
-   if(entrada!= -1 && salida!= -1){
+   
 
       pid = fork(); //Creamos la minishell hija
 
       if (pid == 0){ //Si es la minishell hija
 
-         if(indice_ent!= 0){
+         if(entrada!= 0){
 
             dup2(entrada, STDIN_FILENO);
          }
 
-         if(indice_sal!=1)
+         if(salida!=1)
          {
             dup2(salida,STDOUT_FILENO);
          }
 
          execvp(args[0],args);//Ejecuta la orden
-         return 0;
+         dup2(0,STDIN_FILENO);   //si falla porque no existe la orden vuelve a poner los descriptores de entrada y salida como estaban para 
+         dup2(1,STDOUT_FILENO);  //escribir el error por pantalla
+         printf("Esa orden no existe.\n");
+         exit(-1);
 
       }
       else{ 
          free_argumentos(args); //Libera la memoria dinamica
+         if(salida != 1){
+            dup2(1,STDOUT_FILENO);
+         }
+         if(entrada != 0){
+            dup2(0,STDIN_FILENO);
+         }
          return pid; //Devuelve el pid del hijo
       }
-   }
-   else{
-
-      return -1;
-
-   }
+   
+  
 
    /* Si la linea de ordenes posee tuberias o redirecciones, podra incluir */
    /* aqui, en otras fases de la practica, el codigo para su tratamiento.  */

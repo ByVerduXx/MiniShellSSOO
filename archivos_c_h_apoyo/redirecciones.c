@@ -38,7 +38,7 @@ void redirec_entrada(char **args, int indice_entrada, int *entrada) //**args: ar
 void redirec_salida(char **args, int indice_salida, int *salida)	//**args: argumentos introducidos por teclado en la minishell; indice_salida: ">"; *salida: descriptor de archivo
 {
    
-    *salida = open(args[indice_salida+1],O_WRONLY | O_TRUNC,0777); //Si ya existe el archivo de salida borra su información para reescribirla y le asigna todos los permisos
+    *salida = open(args[indice_salida+1],O_TRUNC | O_WRONLY,0777); //Si ya existe el archivo de salida borra su información para reescribirla y le asigna todos los permisos
     if(*salida == -1)							//Si no existe el archivo de salida 
     {
         *salida = open(args[indice_salida+1],O_CREAT | O_WRONLY,0777);	//Lo crea y le asigna todos los permisos
