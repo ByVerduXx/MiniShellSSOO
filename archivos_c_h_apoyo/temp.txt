@@ -1,6 +1,24 @@
-Ruben
-ZZZZ
-AAA
-Manu
-Dani
-David
+total 156
+-rw-r--r-- 1 manu01 manu01  2797 ene  9 16:09 ejecutar.c
+-rw-r--r-- 1 manu01 manu01   169 ene  9 16:09 ejecutar.h
+-rw-r--r-- 1 manu01 manu01  8824 ene  9 16:09 ejecutar.o
+-rw-r--r-- 1 manu01 manu01  1046 ene  9 16:09 entrada_minishell.c
+-rw-r--r-- 1 manu01 manu01   125 ene  9 16:09 entrada_minishell.h
+-rw-r--r-- 1 manu01 manu01  7104 ene  9 16:09 entrada_minishell.o
+-rw-r--r-- 1 manu01 manu01   196 ene  9 16:09 internas.h
+-rw-r--r-- 1 manu01 manu01  4936 ene  9 16:09 internas.o
+-rw-r--r-- 1 manu01 manu01   394 ene  9 16:09 libmemoria.c
+-rw-r--r-- 1 manu01 manu01   152 ene  9 16:09 libmemoria.h
+-rw-r--r-- 1 manu01 manu01  4104 ene  9 16:09 libmemoria.o
+-rw-r--r-- 1 manu01 manu01  8574 ene  9 16:09 libshell.a
+-rw-r--r-- 1 manu01 manu01   962 ene  9 16:09 makefile
+-rwxr-xr-x 1 manu01 manu01 29480 ene  9 16:09 minishell
+-rw-r--r-- 1 manu01 manu01  2369 ene  9 16:09 minishell.c
+-rw-r--r-- 1 manu01 manu01 11136 ene  9 16:09 minishell.o
+-rw-r--r-- 1 manu01 manu01   234 ene  9 16:09 parser.h
+-rw-r--r-- 1 manu01 manu01  3368 ene  9 16:09 parser.o
+-rw-r--r-- 1 manu01 manu01  1860 ene  9 16:09 redirecciones.c
+-rw-r--r-- 1 manu01 manu01   192 ene  9 16:09 redirecciones.h
+-rw-r--r-- 1 manu01 manu01  6984 ene  9 16:09 redirecciones.o
+-rwxr-xr-x 1 manu01 manu01    31 ene  9 16:09 salida.txt
+-rwxr-xr-x 1 manu01 manu01     0 ene  9 16:10 temp.txt

@@ -9,11 +9,31 @@
 #include "redirecciones.h"
 
 
-pid_t ejecutar_orden(const char *orden, int *pbackgr)
+
+int ** crear_pipes (int nordenes)
+{
+   int ** pipes = NULL ;
+   int i ;
+   pipes = ( int **) malloc (sizeof(int*) * (nordenes-1));
+   for ( i = 0; i < ( nordenes - 1); i ++)
+   {
+      pipes [i] = ( int *) malloc ( sizeof ( int ) * 2);
+
+      if(pipe(pipes[i]) == -1)
+      {
+         perror("Pipe error");
+         exit(-1);
+      }
+   }
+   return pipes;
+}
+
+
+pid_t ejecutar_orden(const char *orden,int entrada,int salida, int *pbackgr)
 {
    char **args;
    pid_t pid;
-   int indice_ent = -1, indice_sal = -1,entrada = 0,salida = 1; /* por defecto, no hay < ni > */
+   int indice_ent = -1, indice_sal = -1; /* por defecto, no hay < ni > */
    int entrada_estandar = dup(0),salida_estandar = dup(1);  //guardamos los descriptores de entrada y salida estandar
    char * nombre;       //copiamos el nombre del archivo de salida en caso de que exista
    
@@ -75,16 +95,63 @@ pid_t ejecutar_orden(const char *orden, int *pbackgr)
  
 void ejecutar_linea_ordenes(const char *orden)
 {
-   pid_t pid;
+   pid_t *pids=NULL;
    int backgr;
+   char **ordenes ;
+   int nordenes;
+   int **pipes ;
+   int salida,entrada;
+
+   ordenes = parser_pipes(orden,&nordenes);
+   pipes = crear_pipes(nordenes);
 
 
-   /* Si la orden es compuesta, podra incluir aqui, en otra fase de la */
-   /* practica, el codigo para su tratamiento                          */
- 
+   for(int i=0;i<(nordenes-1);i++)
+   {
+      if(i==0)
+      {
+         if(nordenes>1)
+         {
+            salida = pipes[0][1];
 
-   pid = ejecutar_orden(orden, &backgr);
-   if (backgr == 0 && pid > 0){ //Si es el padre y es una orden en primer plano espera al hijo
-      wait(0);
+         }else
+         {
+            salida = STDOUT_FILENO;
+         }
+         
+         pids[0]=ejecutar_orden(ordenes[0],STDOUT_FILENO,salida,&backgr);
+
+      }
+      else if(i==nordenes-1 && nordenes>1)
+      {
+         entrada=pipes[nordenes-2][0];
+         pids[i] = ejecutar_orden(ordenes[i],entrada,STDOUT_FILENO,&backgr);
+      }
+      else
+      {
+         entrada=pipes[i-1][0];
+         salida = pipes[i][1];
+         pids[i] = ejecutar_orden(ordenes[i],entrada,salida,&backgr);
+
+      }
+
+
    }
+
+
+   if (backgr == 0 && pids[nordenes-1]>0)
+   { //Si es el padre y es una orden en primer plano espera al hijo
+      waitpid(pids[nordenes-1],0,0);
+   }
+   free(pids);
+   free_ordenes_pipes(ordenes,pipes,nordenes);
+
 }   
+
+
+
+
+
+
+
+
