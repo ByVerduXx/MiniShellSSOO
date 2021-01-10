@@ -42,22 +42,26 @@ int main(int argc, char *argv[])
       }
       else{
 
-         if (es_ord_interna(buf))
-         {
-            ejecutar_ord_interna(buf);
-         }
-         else{
-            if(strstr(buf, ";")!=NULL){ //Comprueba si existe un carácter ";" en el input
-               char *token = strtok(buf, ";");//Divide la cadena por el ";" y la almacena en una lista
-               while (token!= NULL){//Condición cuando no quedan más órdenes
-                  ejecutar_linea_ordenes(token);//Ejecuta la función para cada orden
-                  token=strtok(NULL,";");//Pasa a la siguiente orden 
-                  printf("\n ");
+         if(strstr(buf, ";")!=NULL){ //Comprueba si existe un carácter ";" en el input
+            char *token = strtok(buf, ";");//Divide la cadena por el ";" y la almacena en una lista
+            while (token!= NULL){//Condición cuando no quedan más órdenes
+               if (es_ord_interna(token)){
+                  ejecutar_ord_interna(token);  //si es interna, ejecuta la orden por esta funcion
                }
-               
+               else{
+                  ejecutar_linea_ordenes(token);     //si no, la ejecuta por la de ordenes externas
+               }
+               token=strtok(NULL,";");//Pasa a la siguiente orden 
+               printf("\n ");
+            }
+         }     
+         else{
+            if (es_ord_interna(buf))
+            {
+               ejecutar_ord_interna(buf);
             }
             else{
-            ejecutar_linea_ordenes(buf);
+               ejecutar_linea_ordenes(buf);   
             }
          }
 

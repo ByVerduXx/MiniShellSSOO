@@ -2,6 +2,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <fcntl.h>
 
 #include "parser.h"
 #include "ejecutar.h"
@@ -14,12 +15,12 @@ int ** crear_pipes (int nordenes)
 {
    int ** pipes = NULL ;
    int i ;
-   pipes = ( int **) malloc (sizeof(int*) * (nordenes-1));
+   pipes = ( int **) malloc (sizeof(int*) * (nordenes-1));  //reserva memoria para tantas tuberias como nordenes-1 haya
    for ( i = 0; i < ( nordenes - 1); i ++)
    {
-      pipes [i] = ( int *) malloc ( sizeof ( int ) * 2);
+      pipes [i] = ( int *) malloc ( sizeof ( int ) * 2); //reserva memoria para cada tuberia (de la forma int pipe[2])
 
-      if(pipe(pipes[i]) == -1)
+      if(pipe(pipes[i]) == -1)         //crea la tuberia
       {
          perror("Pipe error");
          exit(-1);
@@ -36,6 +37,7 @@ pid_t ejecutar_orden(const char *orden,int entrada,int salida, int *pbackgr)
    int indice_ent = -1, indice_sal = -1; /* por defecto, no hay < ni > */
    int entrada_estandar = dup(0),salida_estandar = dup(1);  //guardamos los descriptores de entrada y salida estandar
    char * nombre;       //copiamos el nombre del archivo de salida en caso de que exista
+   int fd;     //comprobador de la existencia de archivo
    
    if ((args = parser_orden(orden, &indice_ent, &indice_sal, pbackgr)) == NULL)
    {
@@ -48,6 +50,7 @@ pid_t ejecutar_orden(const char *orden,int entrada,int salida, int *pbackgr)
    }
    if(indice_sal!=-1){
       nombre = args[indice_sal + 1];   //le asignamos el nombre del archivo de salida
+      fd = open(nombre, O_RDONLY);     //intentamos abrir el archivo y guardamos su descriptor
       redirec_salida(args,indice_sal,&salida);  //si hay una redireccion, llama a la funcion
    }
       pid = fork(); //Creamos la minishell hija
@@ -57,30 +60,33 @@ pid_t ejecutar_orden(const char *orden,int entrada,int salida, int *pbackgr)
          if(entrada!= 0){
 
             dup2(entrada, STDIN_FILENO);   //cambia la entrada estandar por el archivo
+            close(entrada);
          }
 
          if(salida!=1)
          {
             dup2(salida,STDOUT_FILENO);   //cambia la salida estandar por el archivo
+            close(salida);
          }
 
          execvp(args[0],args);//Ejecuta la orden
          dup2(salida_estandar,STDOUT_FILENO);  //si falla porque no existe la orden vuelve a poner los descriptores de entrada y salida como estaban para 
          dup2(entrada_estandar,STDIN_FILENO);  //escribir el error por pantalla
          printf("Esa orden no existe.\n");
-         if(indice_sal){   //si habia redireccion de salida
+         if(indice_sal && fd < 0){   //si habia redireccion de salida y el archivo no estaba creado anteriormente, lo borra
             remove(nombre); //borra el archivo creado
          }
+         else{close(fd);}
          exit(-1);
 
       }
       else{ 
          free_argumentos(args); //Libera la memoria dinamica
-         if(salida != 1){
-            dup2(salida_estandar, STDOUT_FILENO);  //vuelve a poner la salida estandar
+         if(salida != STDOUT_FILENO){
+            close(salida);
          }
-         if(entrada != 0){
-            dup2(entrada_estandar,STDIN_FILENO);   //vuelve a poner la entrada estandar
+         if(entrada != STDIN_FILENO){
+            close(entrada);
          }
          return pid; //Devuelve el pid del hijo
       }
@@ -142,7 +148,7 @@ void ejecutar_linea_ordenes(const char *orden)
 
    if (backgr == 0 && pids[nordenes-1]>0)
    { //Si es el padre y es una orden en primer plano espera al hijo
-      waitpid(pids[nordenes-1],0,0);
+      waitpid(pids[nordenes-1],NULL,0);
    }
    free(pids);
    free_ordenes_pipes(ordenes,pipes,nordenes);
