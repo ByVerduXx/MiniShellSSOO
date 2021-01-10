@@ -104,9 +104,10 @@ void ejecutar_linea_ordenes(const char *orden)
 
    ordenes = parser_pipes(orden,&nordenes);
    pipes = crear_pipes(nordenes);
+   pids = (int *)malloc(sizeof(int)* nordenes);
 
 
-   for(int i=0;i<(nordenes-1);i++)
+   for(int i=0;i<(nordenes);i++)
    {
       if(i==0)
       {
@@ -119,7 +120,7 @@ void ejecutar_linea_ordenes(const char *orden)
             salida = STDOUT_FILENO;
          }
          
-         pids[0]=ejecutar_orden(ordenes[0],STDOUT_FILENO,salida,&backgr);
+         pids[0]=ejecutar_orden(ordenes[0],STDIN_FILENO,salida,&backgr);
 
       }
       else if(i==nordenes-1 && nordenes>1)
