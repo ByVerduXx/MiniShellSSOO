@@ -1,0 +1,63 @@
+﻿Integrantes del grupo:
+
+	Daniel Verduras Gallego
+	David Fernández Sanz
+	Rubén Castro Sanz
+	Jose Manuel Fando Álamo
+
+
+Profesora: Julia Clemente Párraga
+Grupo de laboratorio: Lunes 8:00-10:00 am
+
+Fases de la práctica realizadas:
+	
+	1. Ciclo de ejecución de órdenes.
+	2. Ejecución de órdenes externas simples en primer plano.
+	3. Ejecución de órdenes externas simples en segundo plano.
+	4. Realización de makefile.
+	5. Ejecución de secuencia de órdenes 
+	6. Tratamiento de redirecciones.
+	7. Implementación de tuberías o pipes
+
+Mejoras adicionales:
+	
+	En la fase 6 de redirecciones, al introducir una orden del tipo: ordenquenoexiste > archivo.txt hay dos opciones: 
+	1. Que el archivo.txt esté ya creado
+	2. Que el archivo.txt no exista
+	
+	En la práctica normal, si introducimos esa orden y es el segundo caso, la función redireccionar_salida crea el archivo.txt pero luego no realiza nada porque la orden no existe. 
+
+	Lo que hemos implementado es que, en caso de que la orden no exista y el archivo destino no existía en un principio, lo borra.
+
+	La bash normal sí que lo crea, pero decidimos hacer esto porque pensamos que no tenía mucho sentido. Eso sí, si el archivo si existía previamente, no lo toca.
+
+	Esta mejora está implementada en la funcion ejecutar_orden del archivo ejecutar.c
+
+Uso de git y GitHub:
+
+	Durante todo el proyecto hemos utilizado un repositorio de github para mantener control sobre versiones y actualizaciones del código.
+
+	Se creó desde GitHub. Luego cada uno en nuestro ordenador utilizamos git para clonarlo y hacer commits. 
+
+	-git clone <link>
+	-git status (para ver los cambios)
+	-git add . (para añadir los cambios)
+	-git commit -m “Titulo” (para hacer el commit)
+	-git push (para subir los archivos)
+	-git pull (para descargar el commit de los demás)
+
+	Y luego otros comandos como git reset –hard o del estilo para cambiar entre versiones.
+
+	El repositorio de GitHub se ha mantenido en privado durante la realización de toda la práctica por motivos obvios (plagio).
+
+
+Link del repositorio: https://github.com/ByVerduXx/MiniShellSSOO
+
+	En él se pueden ver todos los commits que hemos hecho, los días y el progreso de la práctica.
+
+	Sólo se ha puesto público al momento de la entrega, para que la profesora lo pueda ver y comprobar.
+
+
+	
+
+
