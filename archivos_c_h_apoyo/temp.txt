@@ -1,4 +1,0 @@
-  PID TTY          TIME CMD
- 3522 pts/0    00:00:00 bash
- 4766 pts/0    00:00:00 minishell
- 4789 pts/0    00:00:00 ps

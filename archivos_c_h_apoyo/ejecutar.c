@@ -36,8 +36,8 @@ pid_t ejecutar_orden(const char *orden,int entrada,int salida, int *pbackgr)
    pid_t pid;
    int indice_ent = -1, indice_sal = -1; /* por defecto, no hay < ni > */
    int entrada_estandar = dup(0),salida_estandar = dup(1);  //guardamos los descriptores de entrada y salida estandar
-   char * nombre;       //copiamos el nombre del archivo de salida en caso de que exista
-   int fd;     //comprobador de la existencia de archivo
+   char * nombre;       //nombre del archivo de salida en caso de que exista
+   int fd;     //comprobador de la existencia de un archivo
    
    if ((args = parser_orden(orden, &indice_ent, &indice_sal, pbackgr)) == NULL)
    {
@@ -90,13 +90,6 @@ pid_t ejecutar_orden(const char *orden,int entrada,int salida, int *pbackgr)
          }
          return pid; //Devuelve el pid del hijo
       }
-   
-  
-
-   /* Si la linea de ordenes posee tuberias o redirecciones, podra incluir */
-   /* aqui, en otras fases de la practica, el codigo para su tratamiento.  */
-	
-
 }
  
 void ejecutar_linea_ordenes(const char *orden)
